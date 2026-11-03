@@ -31,6 +31,21 @@ describe('parseCsv', () => {
     it('returns an empty array for empty input', () => {
         expect(parseCsv('')).toEqual([]);
     });
+
+    it('handles CRLF line endings', () => {
+        expect(parseCsv('A,B\r\n1,2\r\n3,4\r\n')).toEqual([
+            { A: '1', B: '2' },
+            { A: '3', B: '4' },
+        ]);
+    });
+
+    it('keeps the last row when there is no trailing newline', () => {
+        expect(parseCsv('A,B\n1,2')).toEqual([{ A: '1', B: '2' }]);
+    });
+
+    it('fills missing trailing fields with empty strings', () => {
+        expect(parseCsv('A,B,C\n1,2')).toEqual([{ A: '1', B: '2', C: '' }]);
+    });
 });
 
 describe('parseGamesCsv', () => {
@@ -95,6 +110,14 @@ describe('dedupe helpers', () => {
 });
 
 describe('ratingFromTitle', () => {
+    it.each([
+        ['DevOps Dominion', 3.6],
+        ['Code Quest', 3.9],
+    ])('keeps the published rating for %s stable', (title, expected) => {
+        // Changing the hash changes every seeded rating; update deliberately.
+        expect(ratingFromTitle(title)).toBe(expected);
+    });
+
     it('is deterministic for the same title', () => {
         expect(ratingFromTitle('DevOps Dominion')).toBe(ratingFromTitle('DevOps Dominion'));
     });

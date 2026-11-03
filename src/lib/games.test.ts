@@ -63,4 +63,9 @@ describe('games data-access helpers', () => {
         await seedGames(db, 2);
         expect(await getGameById(db, 99999)).toBeNull();
     });
+
+    it('returns null for a NaN id', async () => {
+        await seedGames(db, 1);
+        expect(await getGameById(db, Number.NaN)).toBeNull();
+    });
 });

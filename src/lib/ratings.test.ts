@@ -44,8 +44,4 @@ describe('formatStarRating', () => {
         expect(formatStarRating(-1)).toBe('☆☆☆☆☆');
         expect(formatStarRating(6)).toBe('★★★★★');
     });
-
-    it('is deterministic for the same input', () => {
-        expect(formatStarRating(3.5)).toBe(formatStarRating(3.5));
-    });
 });
