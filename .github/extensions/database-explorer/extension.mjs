@@ -115,6 +115,9 @@ function normalizeValue(value) {
 async function executeQuery(url, query) {
     const client = createClient({ url });
     try {
+        // The keyword check alone is bypassable (SQLite allows `WITH ... DELETE`),
+        // so make the connection itself reject writes.
+        await client.execute("PRAGMA query_only = ON");
         const result = await client.execute(query);
         const columns = result.columns;
         const rows = result.rows.slice(0, MAX_DISPLAY_ROWS).map((row) =>
