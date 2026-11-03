@@ -48,5 +48,9 @@
     "tsx": "^4.23.15",
     "typescript-eslint": "^8.72.0",
     "vitest": "^5.0.5"
+  },
+  "overrides": {
+    "minimatch": "^11.0.1",
+    "esbuild": "^0.28.1"
   }
 }
